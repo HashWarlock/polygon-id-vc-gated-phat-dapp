@@ -33,7 +33,7 @@ function VcGatedDapp() {
 
   // variables specific to demo
   const myZkEVMSmartContractAddress =
-    "0x3Baf2aa2aD287949590cD39a731fD17606c7D10F";
+    "0x0b9aC89924483077899d2B52bc8AF794F546a1e9";
 
   const contractConfig = {
     address: myZkEVMSmartContractAddress,
@@ -42,6 +42,7 @@ function VcGatedDapp() {
   };
 
   const [count, setCount] = useState();
+  const [quote, setQuote] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -68,12 +69,16 @@ function VcGatedDapp() {
       const readCount = async () => {
         await readCounterValue();
       };
+      const readQuote = async () => {
+        await readQuoteValue();
+      }
       const checkCurrentBlockNumber = async () => {
         const blockNumber = await publicClient.getBlockNumber();
         setCurrentBlockNumber(blockNumber);
       };
 
       readCount();
+      readQuote();
       checkCurrentBlockNumber();
     }
   }, [publicClient]);
@@ -88,6 +93,21 @@ function VcGatedDapp() {
       const newCount = JSON.parse(data);
       setCount(newCount);
       return newCount;
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  }
+
+  async function readQuoteValue() {
+    try {
+      const data = await readContract({
+        ...contractConfig,
+        functionName: "getQuote",
+        chainId,
+      });
+      const newQuote = JSON.parse(data);
+      setQuote(newQuote);
+      return newQuote;
     } catch (err) {
       console.log("Error: ", err);
     }
@@ -214,6 +234,7 @@ function VcGatedDapp() {
                 </a>{" "}
                 to bridge Ethereum Goerli ETH to Polygon zkEVM testnet ETH
               </li>
+              <blockquote>{isLoading ? <Spinner></Spinner> : quote}</blockquote>
             </ul>
           </div>
         </Container>

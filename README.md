@@ -38,6 +38,7 @@ https://github.com/oceans404/fullstack-polygon-id-vc-gated-dapp/tree/main/server
 
 https://github.com/oceans404/fullstack-polygon-id-vc-gated-dapp/tree/main/frontend
 
+
 ## Default localhosts
 
 - Frontend: localhost:3000
